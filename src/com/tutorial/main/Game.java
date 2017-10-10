@@ -15,21 +15,34 @@ public class Game extends Canvas implements Runnable {
     private Handler handler;
     private HUD hud;
     private Spawn spawner;
+    private Menu menu;
+
+    public enum STATE {
+        Menu,
+        Help,
+        Game
+    }
+
+    public STATE GameState = STATE.Menu;
 
     public Game() {
         handler = new Handler();
+        menu = new Menu(this, handler);
         this.addKeyListener(new KeyInput(handler));
+        this.addMouseListener(menu);
+
         hud = new HUD();
         spawner = new Spawn(handler, hud);
         new Window(WIDTH, HEIGHT, "Strange that all!", this);
 
         r = new Random();
-        handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
 
-       // for (int i = 0; i < 2; i++)
-        //handler.addObject(new EnemyBoss((WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
+        if (GameState == STATE.Game) {
+            handler.addObject(new Player(WIDTH / 2 - 32, HEIGHT / 2 - 32, ID.Player, handler));
             handler.addObject(new BasicEnemy(r.nextInt(HEIGHT), r.nextInt(WIDTH), ID.BasicEnemy, handler));
-         //handler.addObject(new SmartEnemy(WIDTH / 2 + 64, HEIGHT / 2 - 64, ID.SmartEnemy, handler));
+        }
+
+
     }
 
     public void start() {
@@ -77,8 +90,13 @@ public class Game extends Canvas implements Runnable {
 
     private void tick() {
         handler.tick();
-        hud.tick();
-spawner.tick();
+        if (GameState == STATE.Game) {
+
+            hud.tick();
+            spawner.tick();
+        }else if(GameState == STATE.Menu){
+            menu.tick();
+        }
     }
 
     private void render() {
@@ -92,10 +110,17 @@ spawner.tick();
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
         handler.render(g);
-        hud.render(g);
+
+        if (GameState == STATE.Game) {
+            hud.render(g);
+        }else if(GameState == STATE.Menu || GameState == STATE.Help){
+            menu.render(g);
+        }
+
         g.dispose();
         bs.show();
     }
+
 
     public static float clamp(float var, float min, float max) {
         if (var >= max)
