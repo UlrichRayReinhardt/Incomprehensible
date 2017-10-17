@@ -21,7 +21,6 @@ public class Handler {
     public void render(Graphics g) {
         for (int i = 0; i < object.size(); i++) {
             GameObject tempObject = object.get(i);
-
             tempObject.render(g);
         }
     }
@@ -31,10 +30,8 @@ public class Handler {
             GameObject tempObject = object.get(i);
             if (tempObject.getId() == ID.Player) {
                 object.clear();
-
-
-                if(Game.gameState != Game.STATE.End)
-                addObject(new Player((int) tempObject.getX(), (int) tempObject.getY(), ID.Player, this));
+                if (Game.gameState != Game.STATE.End)
+                    addObject(new Player((int) tempObject.getX(), (int) tempObject.getY(), ID.Player, this));
             }
         }
     }

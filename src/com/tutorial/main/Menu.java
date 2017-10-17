@@ -54,11 +54,15 @@ public class Menu extends MouseAdapter {
                 return;
             }
         }
-
+        //try again button for help(to menu)
         if (game.gameState == Game.STATE.End) {
             if (mouseOver(mx, my, 210, 350, 200, 64)) {
-                game.gameState = Game.STATE.Menu;
-                return;
+                game.gameState = Game.STATE.Game;
+                hud.setLevel(1);
+                hud.setScore(0);
+                handler.addObject(new Player(Game.WIDTH / 2 - 32, Game.HEIGHT / 2 - 32, ID.Player, handler));
+                handler.clearEnemies();
+                handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.BasicEnemy, handler));
             }
         }
     }
