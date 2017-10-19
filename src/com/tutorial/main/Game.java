@@ -33,6 +33,8 @@ public class Game extends Canvas implements Runnable {
         this.addKeyListener(new KeyInput(handler));
         this.addMouseListener(menu);
 
+        AudioPlayer.load();
+
         spawner = new Spawn(handler, hud);
         new Window(WIDTH, HEIGHT, "Strange that all!", this);
 
